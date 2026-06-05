@@ -27,9 +27,9 @@ const registerVoter = async (req, res) => {
 
         // Election ID: required, alphanumeric only
         if (!electionId || typeof electionId !== 'string' || !electionId.trim()) {
-            validationErrors.push('Election ID is required.');
+            validationErrors.push('ID is required.');
         } else if (!/^[a-zA-Z0-9]+$/.test(electionId.trim())) {
-            validationErrors.push('Election ID must contain only letters and numbers (no special characters).');
+            validationErrors.push(' ID must contain only letters and numbers (no special characters).');
         }
 
         if (!address || typeof address !== 'string' || !address.trim()) {
@@ -59,7 +59,7 @@ const registerVoter = async (req, res) => {
         if (electionIdExists) {
             return res.status(400).json({
                 success: false,
-                message: 'This Election ID is already registered.',
+                message: 'This  ID is already registered.',
             });
         }
 
@@ -94,7 +94,7 @@ const searchVoter = async (req, res) => {
         if (!mobile && !electionId) {
             return res.status(400).json({
                 success: false,
-                message: 'Please provide mobile number or election ID to search.',
+                message: 'Please provide mobile number or  ID to search.',
             });
         }
 
@@ -107,7 +107,7 @@ const searchVoter = async (req, res) => {
         if (!voter) {
             return res.status(404).json({
                 success: false,
-                message: 'No voter record found.',
+                message: 'No ID record found.',
             });
         }
 
@@ -134,7 +134,7 @@ const getVotersList = async (req, res) => {
         if (!electionId && !mobile) {
             return res.status(400).json({
                 success: false,
-                message: 'Please provide electionId or mobile.',
+                message: 'Please provide Id or mobile.',
             });
         }
 
@@ -147,7 +147,7 @@ const getVotersList = async (req, res) => {
         if (!voter) {
             return res.status(404).json({
                 success: false,
-                message: 'No voter record found.',
+                message: 'No ID record found.',
             });
         }
 
@@ -159,7 +159,7 @@ const getVotersList = async (req, res) => {
         console.error('Error in getVotersList:', error);
         res.status(500).json({
             success: false,
-            message: 'Server Error. Could not fetch voter.',
+            message: 'Server Error. Could not fetch ID.',
         });
     }
 };

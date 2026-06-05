@@ -16,7 +16,7 @@ app.use('/api/admin', adminRoutes);
 
 // Base route for health check
 app.get('/', (req, res) => {
-    res.send('Voter Registration API is running...');
+    res.send('ID Registration API is running...');
 });
 
 module.exports = app;
