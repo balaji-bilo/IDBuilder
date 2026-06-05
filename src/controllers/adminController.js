@@ -110,7 +110,7 @@ const getAllVoters = async (req, res) => {
         console.error('Error in getAllVoters:', error);
         res.status(500).json({
             success: false,
-            message: 'Server Error. Could not fetch registered voters.',
+            message: 'Server Error. Could not fetch registered ID.',
         });
     }
 };
