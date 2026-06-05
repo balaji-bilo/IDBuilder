@@ -55,17 +55,56 @@ const adminLogin = async (req, res) => {
     }
 };
 
-// @desc    Get all registered voters (admin only)
-// @route   GET /api/admin/voters
+// @desc    Get all registered voters (admin only) - with pagination
+// @route   GET /api/admin/voters?page=1&limit=10
 // @access  Admin
 const getAllVoters = async (req, res) => {
     try {
-        const voters = await Voter.find().sort({ createdAt: -1 });
+        // Get pagination parameters from query
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        // Validate pagination parameters
+        if (page < 1) {
+            return res.status(400).json({
+                success: false,
+                message: 'Page number must be greater than 0.',
+            });
+        }
+
+        if (limit < 1 || limit > 100) {
+            return res.status(400).json({
+                success: false,
+                message: 'Limit must be between 1 and 100.',
+            });
+        }
+
+        // Calculate skip value for database query
+        const skip = (page - 1) * limit;
+
+        // Get total count of all voters
+        const totalVoters = await Voter.countDocuments();
+
+        // Get paginated voters
+        const voters = await Voter.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // Calculate total pages
+        const totalPages = Math.ceil(totalVoters / limit);
 
         res.status(200).json({
             success: true,
-            count: voters.length,
             data: voters,
+            pagination: {
+                currentPage: page,
+                totalPages: totalPages,
+                totalVoters: totalVoters,
+                limit: limit,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1,
+            },
         });
     } catch (error) {
         console.error('Error in getAllVoters:', error);

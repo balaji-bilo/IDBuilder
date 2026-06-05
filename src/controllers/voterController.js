@@ -68,7 +68,7 @@ const registerVoter = async (req, res) => {
             mobile: mobile.trim(),
             electionId: electionId.trim(),
             address: address.trim(),
-            photoPath: `/uploads/passport-photos/${req.file.filename}`,
+            photoPath: req.file.path,
         });
 
         res.status(201).json({
